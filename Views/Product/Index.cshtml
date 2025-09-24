@@ -1,0 +1,21 @@
+﻿@model List<Product>
+<partial name="_Notification" />
+<div class="container">
+
+    <div style="display:flex">
+
+        @foreach (var obj in Model)
+        {
+            <div>
+                <div>@obj.Title</div>
+                <div>@obj.Price</div>
+                <div class="col-6 col-md-3">
+                    <!-- Pass productId as a route value -->
+                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@obj.ProductId" class="btn btn-secondary form-control">Add Product</a>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>
