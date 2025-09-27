@@ -1,0 +1,19 @@
+﻿[*.cs]
+
+# IDE0022: Use block body for method
+csharp_style_expression_bodied_methods = when_on_single_line
+
+# IDE0021: Use block body for constructor
+csharp_style_expression_bodied_constructors = when_on_single_line
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = suggestion
+
+# IDE0040: Add accessibility modifiers
+dotnet_style_require_accessibility_modifiers = always
+
+# IDE0040: Add accessibility modifiers
+dotnet_diagnostic.IDE0040.severity = suggestion
+
+# IDE0005: Using directive is unnecessary.
+dotnet_diagnostic.IDE0005.severity = warning
