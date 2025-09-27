@@ -6,6 +6,8 @@ using BulkyBookWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Bulky.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NuGet.Packaging.Signing;
 
 namespace BulkyBookWeb.Controllers
 {
@@ -22,17 +24,22 @@ namespace BulkyBookWeb.Controllers
         public IActionResult AddToCart(int productId)
         {
 
-            var cartId = 2;  // Retrieve or create the CartId (for simplicity, using 1 here)
-
+           HttpContext.Session.SetInt32("UserId", 1); // Retrieve or create the CartId (for simplicity, using 1 here)
+            int? userId = HttpContext.Session.GetInt32("UserId");
             // Retrieve or create a cart based on CartId
-            var cart = _context.Carts.FirstOrDefault
-                (c => c.CartId == cartId);
+            var cart = _context.Carts
+      .Include(c => c.CartProducts)
+          .ThenInclude(cp => cp.Product)
+      .FirstOrDefault(c => c.UserId == userId.Value);
 
 
             if (cart == null)
             {
                 // If no cart exists, create a new cart
-                cart = new Cart();
+                cart = new Cart()
+                {
+                    UserId = 1,
+                };
                 _context.Carts.Add(cart);
                 Console.Write("hekki"+"hi"+cart.CartId+"hello");
                 _context.SaveChanges();  // Use synchronous SaveChanges
@@ -62,6 +69,37 @@ namespace BulkyBookWeb.Controllers
             _context.SaveChanges();  // Use synchronous SaveChanges
 
             return RedirectToAction("Index", "Product");
+
+
+
+
+        }
+
+        public IActionResult Index()
+        {
+            // Retrieve the logged-in user’s ID from session
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (!userId.HasValue)
+            {
+                // No user in session, maybe redirect to login or show empty cart
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Lookup the cart by this user
+            var cart = _context.Carts
+                .Include(c => c.CartProducts)
+                    .ThenInclude(cp => cp.Product)
+                .FirstOrDefault(c => c.UserId == userId.Value);
+
+            if (cart == null || cart.CartProducts == null || !cart.CartProducts.Any())
+            {
+                return View("EmptyCart");
+            }
+
+            return View(cart);
+
+
+
 
 
 

@@ -16,6 +16,8 @@
     <None Remove="Repository\IRepository\" />
     <None Remove="Views\Product\" />
     <None Remove="Migrations\" />
+    <None Remove="Views\Cart\" />
+    <None Remove="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />
@@ -43,6 +45,8 @@
     <Folder Include="Repository\IRepository\" />
     <Folder Include="Views\Product\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Views\Cart\" />
+    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bulky.Models\Bulky.Models.csproj">
